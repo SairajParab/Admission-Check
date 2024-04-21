@@ -4,93 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Level Eligibility Check</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Poppins', sans-serif;
+            background-color: #e3f2fd;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #424242;
         }
 
         form {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 300px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            width: 350px;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #1a237e;
+            font-weight: 600;
+            margin-bottom: 24px;
         }
 
         label {
-            font-size: 16px;
-            color: #666;
+            font-size: 14px;
+            color: #1a237e;
+            font-weight: 400;
+            margin-bottom: 8px;
         }
 
-        input[type="date"] {
+        input[type="date"], input[type="text"] {
             width: 100%;
-            padding: 10px;
-            margin-top: 8px;
+            padding: 12px;
             margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            display: block;
+            border: 2px solid #90caf9;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 4px;
-            background-color: #5c67f2;
+            border-radius: 6px;
+            background-color: #5c6bc0;
             color: white;
-            cursor: pointer;
             font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #4a54e1;
+            background-color: #3949ab;
         }
     </style>
 </head>
 <body>
     <h1>Grade Level Eligibility Check</h1>
     <form id="eligibilityForm">
-        <label for="dob">Enter your date of birth:</label>
+        <label for="name">Enter child's name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="dob">Enter child's date of birth:</label>
         <input type="date" id="dob" name="dob" required>
+
         <button type="button" onclick="checkEligibility()">Check</button>
     </form>
 
     <script>
         function checkEligibility() {
+            const name = document.getElementById('name').value;
             const dob = document.getElementById('dob').value;
             const dobDate = new Date(dob);
-            const yearOfBirth = dobDate.getFullYear();
-            let message = "";
 
-            // Determine eligibility based solely on the year of birth
-            switch(yearOfBirth) {
-                case 2018:
-                    message = "He/she is eligible for 1st Standard.";
-                    break;
-                case 2019:
-                    message = "He/she is eligible for Sr. Kg.";
-                    break;
-                case 2020:
-                    message = "He/she is eligible for Jr. Kg.";
-                    break;
-                    case 2021:
-                    message = "He/she is eligible for Nursery";
-                    break;
-                default:
-                    message = "He/she is not eligible for nursery, Jr. Kg., Sr. Kg., or 1st Standard based on the year of birth.";
-                    break;
+            // Define eligibility ranges
+            const ranges = [
+                { start: new Date(2020, 6, 1), end: new Date(2021, 11, 31), grade: "Nursery" },
+                { start: new Date(2019, 6, 1), end: new Date(2020, 11, 31), grade: "Jr. Kg" },
+                { start: new Date(2018, 6, 1), end: new Date(2019, 11, 31), grade: "Sr. Kg" },
+                { start: new Date(2017, 6, 1), end: new Date(2018, 11, 31), grade: "1st Standard" }
+            ];
+
+            let message = `${name} is not eligible for any programs based on the date of birth provided.`;
+
+            for (let i = 0, j = 1; i < ranges.length && j < ranges.length; i++, j++) {
+                console.log(`Checking range for ${ranges[i].grade}:`, ranges[i].start, ranges[i].end, dobDate);
+    if (dobDate >= ranges[i].start && dobDate <= ranges[i].end) {
+        message = `${name} is eligible for ${ranges[i].grade}.`;
+        break;
+                }
             }
 
             alert(message);
