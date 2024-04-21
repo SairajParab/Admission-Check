@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Level Eligibility Check</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 16px;
+            color: #666;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #5c67f2;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4a54e1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grade Level Eligibility Check</h1>
+    <form id="eligibilityForm">
+        <label for="dob">Enter your date of birth:</label>
+        <input type="date" id="dob" name="dob" required>
+        <button type="button" onclick="checkEligibility()">Check</button>
+    </form>
+
+    <script>
+        function checkEligibility() {
+            const dob = document.getElementById('dob').value;
+            const dobDate = new Date(dob);
+            const yearOfBirth = dobDate.getFullYear();
+            let message = "";
+
+            // Determine eligibility based solely on the year of birth
+            switch(yearOfBirth) {
+                case 2018:
+                    message = "He/she is eligible for 1st Standard.";
+                    break;
+                case 2019:
+                    message = "He/she is eligible for Sr. Kg.";
+                    break;
+                case 2020:
+                    message = "He/she is eligible for Jr. Kg.";
+                    break;
+                    case 2021:
+                    message = "He/she is eligible for Nursery";
+                    break;
+                default:
+                    message = "He/she is not eligible for nursery, Jr. Kg., Sr. Kg., or 1st Standard based on the year of birth.";
+                    break;
+            }
+
+            alert(message);
+        }
+    </script>
+</body>
+</html>
