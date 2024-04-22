@@ -82,23 +82,26 @@
             const name = document.getElementById('name').value;
             const dob = document.getElementById('dob').value;
             const dobDate = new Date(dob);
+            const cutoffDate = new Date('2024-12-31');
 
-            // Define eligibility ranges
-            const ranges = [
-                { start: new Date(2020, 6, 1), end: new Date(2021, 11, 31), grade: "Nursery" },
-                { start: new Date(2019, 6, 1), end: new Date(2020, 11, 31), grade: "Jr. Kg" },
-                { start: new Date(2018, 6, 1), end: new Date(2019, 11, 31), grade: "Sr. Kg" },
-                { start: new Date(2017, 6, 1), end: new Date(2018, 11, 31), grade: "1st Standard" }
-            ];
+            // Calculate the age at the cutoff date
+            let age = cutoffDate.getFullYear() - dobDate.getFullYear();
+            let m = cutoffDate.getMonth() - dobDate.getMonth();
+            if (m < 0 || (m === 0 && cutoffDate.getDate() < dobDate.getDate())) {
+                age--;
+            }
 
-            let message = `${name} is not eligible for any programs based on the date of birth provided.`;
+            let message = `${name} is not eligible for any school programs based on the date of birth provided.`;
 
-            for (let i = 0, j = 1; i < ranges.length && j < ranges.length; i++, j++) {
-                console.log(`Checking range for ${ranges[i].grade}:`, ranges[i].start, ranges[i].end, dobDate);
-    if (dobDate >= ranges[i].start && dobDate <= ranges[i].end) {
-        message = `${name} is eligible for ${ranges[i].grade}.`;
-        break;
-                }
+            // Determine eligibility based on age as of December 31, 2024
+            if (age >= 6) {
+                message = `${name} is eligible for 1st Standard.`;
+            } else if (age >= 5) {
+                message = `${name} is eligible for Sr. Kg.`;
+            } else if (age >= 4) {
+                message = `${name} is eligible for Jr. Kg.`;
+            } else if (age >= 3) {
+                message = `${name} is eligible for Nursery.`;
             }
 
             alert(message);
